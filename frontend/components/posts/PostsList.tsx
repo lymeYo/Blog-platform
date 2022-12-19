@@ -1,16 +1,27 @@
-import Router from "next/router"
+import React from "react"
+import Router, { useRouter } from "next/router"
+import { useSelector } from "react-redux"
 import PostItem from "./PostItem"
 
 function PostsList(props: any) {
+  const { postsList } = useSelector(({ posts }) => ({
+    postsList: posts.postsList 
+  }))
 
-   
-   return (
-      <ul className="list">
-         <PostItem isFullPost={false} />
-         <PostItem isFullPost={false} />
-         <PostItem isFullPost={false} />
-      </ul>
-   )
+  const list = postsList.map((postData) => {
+    return (
+      <PostItem postId={postData.postId} isFullPost={false} />
+    )
+  })
+  
+  return (
+    <ul className="list">
+      { list }
+      {/* <PostItem isFullPost={false} />
+      <PostItem isFullPost={false} />
+      <PostItem isFullPost={false} /> */}
+    </ul>
+  )
 }
 
 export default PostsList

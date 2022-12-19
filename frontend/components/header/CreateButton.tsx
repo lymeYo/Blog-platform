@@ -10,12 +10,14 @@ function CreateButton(props: any) {
    }
 
    return (
-      <div className="create-button">
-         <div className="body">
-            <div className="icon"><AddIcon /></div>
-            <div onClick={renderCreatePost} className="text">Создать</div>
+     <div className="create-button">
+       <div onClick={renderCreatePost} className="body">
+         <div className="icon">
+           <AddIcon />
          </div>
-      </div>
+         <div className="text">Создать</div>
+       </div>
+     </div>
    )
 }
 

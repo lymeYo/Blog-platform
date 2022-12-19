@@ -1,35 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeepPartial, Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
-import { User, UserDocument } from './schemas/user.schema'; 
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectRepository(UserEntity)
+    private repository: Repository<UserEntity>,
+  ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    createdUser.save();
-    return createdUser;
+  create(dto: CreateUserDto) {
+    return this.repository.save(dto); // передаю весь dto так как в нем есть все необходимые свойства
+    // return 'This action adds a new user';
   }
 
-  async findAll(): Promise<string | User[]> {
-    return 'all users'
-    // return this.userModel.find().exec();
+  findAll(): Promise<UserEntity[]> {
+    return this.repository.find();
   }
 
-  async findOne(id: number): Promise<User> {
-    return this.userModel.findById(id).exec();
+  findOne(id: number): Promise<UserEntity> {
+    return this.repository.findOneBy({ id });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+  update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
+    return this.repository.update(id, dto);
   }
 
-  async remove(id: number): Promise<User> {
-    return this.userModel.findByIdAndDelete(id);
+  remove(id: number) {
+    return `This action removes a #${id} user`;
   }
 }

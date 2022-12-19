@@ -14,35 +14,33 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const mongoose_1 = require("@nestjs/mongoose");
-const mongoose_2 = require("mongoose");
-const user_schema_1 = require("./schemas/user.schema");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
+const user_entity_1 = require("./entities/user.entity");
 let UserService = class UserService {
-    constructor(userModel) {
-        this.userModel = userModel;
+    constructor(repository) {
+        this.repository = repository;
     }
-    async create(createUserDto) {
-        const createdUser = new this.userModel(createUserDto);
-        createdUser.save();
-        return createdUser;
+    create(dto) {
+        return this.repository.save(dto);
     }
-    async findAll() {
-        return 'all users';
+    findAll() {
+        return this.repository.find();
     }
-    async findOne(id) {
-        return this.userModel.findById(id).exec();
+    findOne(id) {
+        return this.repository.findOneBy({ id });
     }
-    async update(id, updateUserDto) {
-        return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+    update(id, dto) {
+        return this.repository.update(id, dto);
     }
-    async remove(id) {
-        return this.userModel.findByIdAndDelete(id);
+    remove(id) {
+        return `This action removes a #${id} user`;
     }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)(user_schema_1.User.name)),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

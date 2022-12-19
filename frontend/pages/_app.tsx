@@ -26,6 +26,7 @@ const theme = createTheme({
 });
 
 function MyApp({ Component, pageProps }) {
+  
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>

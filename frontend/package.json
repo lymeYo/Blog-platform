@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.25.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
     "formik": "^2.2.9",
+    "fs-extra": "^10.1.0",
     "immer": "^9.0.15",
     "next": "12.1.6",
     "node-sass": "^7.0.1",
@@ -28,9 +28,17 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@editorjs/editorjs": "^2.26.2",
+    "@editorjs/header": "^2.7.0",
+    "@editorjs/image": "^2.7.0",
+    "@editorjs/list": "^1.8.0",
+    "@editorjs/simple-image": "^1.5.0",
+    "@types/draft-js": "^0.11.9",
     "@types/node": "^18.0.0",
     "@types/react": "^18.0.14",
+    "draft-js": "^0.11.7",
     "eslint": "8.17.0",
-    "eslint-config-next": "12.1.6"
+    "eslint-config-next": "12.1.6",
+    "uuid": "^9.0.0"
   }
 }

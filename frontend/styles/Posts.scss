@@ -1,179 +1,191 @@
 .posts {
-   display: grid;
-   grid-template-columns: 4fr 1fr;
+  display: grid;
+  grid-template-columns: 5fr 1fr;
 
-   .list {
-      // border: 2px solid #000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      
-   }
+  .list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+  }
 
-   .comments {
-   }
+  .comments {
+  }
 }
 
 .post-item-wrapper {
-   display: flex;
-   justify-content: center;
-   height: 100%;
-   // border: 2px solid #000;
-   .post-item {
-      width: 80%;
-      border-radius: 10px;
-   }
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  // border: 2px solid #000;
+  .post-item {
+    width: 80%;
+    border-radius: 10px;
+  }
 }
 .post-item {
-   
-   margin: 15px 0;
-   width: 675px;
-   padding: 15px;
-   border-radius: 10px;
-   background-color: #fff;
+  word-wrap: normal;
+  margin: 15px 0;
+  width: 675px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #fff;
 
-   .info {
-      display: flex;
-      justify-content: space-between;
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    &-row {
+        display: flex;
+      //  border: 2px solid silver;
 
-      &-row {
-         display: flex;
+        div {
+          margin: 0px 10px;
+        }
 
-         div {
-            margin: 0px 10px;
-         }
-
-         .category {
-            font-weight: 500;
-         }
-
-         .username {}
-
-         .timepost {
-            color: $grayClr;
-         }
-      }
-
-      .buttons {
-         display: flex;
-         .subscribe {
-
-         }
-         .parametrs {
-
-         }
-      }
-   }
-
-   .body {
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      
-      .title {
-         font-weight: 600;
-         font-size: 25px;
-
-      }
-
-      .text-area {
-         padding: 10px 0;
-         line-height: 25px;
-      }
-
-      .image {
-         max-width: 800px;
-         // border: 2px solid #000;
-         img {
-            max-width: 100%;
-         }
-      }  
-   }
-
-   .content {
-      line-height: 25px;
-   }
-
-   .buttons {
-      display: flex;
-      justify-content: space-between;
-      padding: 30px 0 0 0;
-      .row {
-         align-items: center;
-         display: flex;
-         &-comments {
-
-         }
-         &-share {
-            position: relative;
-            svg {
-               position: relative;
-               bottom: 3px;
-            }
-         }
-         &-bookmark {
-
-         }
-      }
-   }
-
-   .comments {
-      .add-comment-area {
-         background-color: rgb(235, 235, 235);
-         .add-comment-buttons {
-            display: flex;
-            justify-content: space-between;
-         }
-         input {
-            background-color: rgb(235, 235, 235);
-            padding: 5px;
-            border: 1px solid $grayClr;
-            border-radius: 10px;
-            font-size: 20px;
+        .category {
+          font-weight: 500;
+        }
+        .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        overflow: hidden;
+          img {
             width: 100%;
-            border: none;
-            outline: none;
-         }
-      }
+          }
+        }
+        
+        .username {}
 
-      &-list {
-         .comment {
-            padding: 15px 0;
-            
-            &-info {
-               display: flex;
-               
-               .comment-avatar {}
-               .comment-profile {
-                  flex-grow: 1;
-                  padding: 0 10px;
-                  
-                  .comment-name {
-                     font-weight: 500;
-                  }
-                  .comment-time {
-                     font-size: 13px;
-                     color: $grayClr;
-                  }
-               }
-            }
-            &-text {
-               flex-grow: 1;
-               padding: 10px 0;
-            }
-            &-buttons {
-               display: flex;
-               align-items: center;
-               font-size: 14px;
-               color: $grayClr;
+        .timepost {
+          color: $grayClr;
+        }
+    }
 
-               div + div {
-                  margin-left: 15px;
-               }
-            }
-         }
-      }
-   }
+    .buttons {
+      padding: 0;
+      display: flex;
+      // align-items: center;
+        .subscribe {
+        }
+        .parametrs {
+        }
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+     
+    .title {
+        font-weight: 600;
+        font-size: 25px;
+
+    }
+
+    .text-area {
+        padding: 10px 0;
+        line-height: 25px;
+    }
+
+    .image {
+        max-width: 800px;
+        // border: 2px solid #000;
+        img {
+          max-width: 100%;
+        }
+    }  
+  }
+
+  .content {
+    line-height: 25px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 0 0 0;
+    .row {
+        align-items: center;
+        display: flex;
+        &-comments {
+
+        }
+        &-share {
+          position: relative;
+          svg {
+              position: relative;
+              bottom: 3px;
+          }
+        }
+        &-bookmark {
+
+        }
+    }
+  }
+
+  .comments {
+  // border: 2px solid silver;
+    .add-comment-area {
+      background-color: rgb(235, 235, 235);
+        .add-comment-buttons {
+          display: flex;
+          justify-content: space-between;
+        }
+        input {
+          background-color: rgb(235, 235, 235);
+          padding: 5px;
+          border: 1px solid $grayClr;
+          border-radius: 10px;
+          font-size: 20px;
+          width: 100%;
+          border: none;
+          outline: none;
+        }
+    }
+
+    &-list {
+      padding: 10px 25px;
+        .comment {
+          padding: 15px 0;
+          
+          &-info {
+              display: flex;
+              
+              .comment-avatar {}
+              .comment-profile {
+                flex-grow: 1;
+                padding: 0 10px;
+                
+                .comment-name {
+                    font-weight: 500;
+                }
+                .comment-time {
+                    font-size: 13px;
+                    color: $grayClr;
+                }
+              }
+          }
+          &-text {
+              flex-grow: 1;
+              padding: 10px 0;
+          }
+          &-buttons {
+              display: flex;
+              align-items: center;
+              font-size: 14px;
+              color: $grayClr;
+
+              div + div {
+                margin-left: 15px;
+              }
+          }
+        }
+    }
+  }
 }

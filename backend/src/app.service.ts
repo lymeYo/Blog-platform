@@ -1,9 +1,7 @@
-import { Injectable } from '@nestjs/common'
-import { InjectModel } from '@nestjs/mongoose'
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class AppService { 
-  
+export class AppService {
   getHello(): string {
     return 'Hello World!';
   }

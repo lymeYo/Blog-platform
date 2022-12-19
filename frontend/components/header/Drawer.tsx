@@ -5,31 +5,64 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
+import { useRouter } from "next/router";
+
+interface methodInteface {
+  (): void;
+}
+
+interface RoutingMethodsInterface {
+  routePopular: methodInteface
+}
 
 function DrawerList(props: any) {
-   const getListItem = (text: string, iconForText: ReactJSXElement) => (
-      <div className='list-item' key={text} >
-         <ListItem>
-            <ListItemButton>
-               <ListItemIcon>
-                  {iconForText}
-               </ListItemIcon>
-               <ListItemText primary={text} />
-            </ListItemButton>
-         </ListItem>
-      </div>
+  const router = useRouter() 
+ 
+  const RoutingMethods: RoutingMethodsInterface = {
+    routePopular: () => {
+      router.push(`/`)
+    },
+  }
+
+  const itemButtonClick = (methodForRoute) => {
+    methodForRoute()
+    props.drawerClose()
+  }
+  
+   const getListItem = (
+     text: string,
+     iconForText: ReactJSXElement,
+     routeMethod: methodInteface
+   ) => (
+     <div className="drawer-list-item" key={text}>
+       <ListItem
+         sx={{
+           margin: "0 10px",
+         }}
+       >
+         <ListItemButton onClick={() => itemButtonClick(routeMethod)}>
+           <ListItemIcon>{iconForText}</ListItemIcon>
+           <ListItemText primary={text} />
+         </ListItemButton>
+       </ListItem>
+     </div>
    )
    
    return (
-      <ul className='list'>
-         {getListItem('Популярное', <WhatshotIcon />)}
-         {getListItem('Свежее', <AccessTimeIcon />)}
-         {getListItem('Моя лента', <AnalyticsIcon />)}
-         {getListItem('Закладки', <BookmarkIcon />)} 
-      </ul>
-   )
+     <List
+       sx={{
+         padding: "0 20px 0 0",
+       }}
+       className="drawer-list"
+     >
+       {getListItem("Популярное", <WhatshotIcon />, RoutingMethods.routePopular)}
+       {getListItem("Свежее", <AccessTimeIcon />, RoutingMethods.routePopular)}
+       {getListItem("Моя лента", <AnalyticsIcon />, RoutingMethods.routePopular)}
+       {getListItem("Закладки", <BookmarkIcon />, RoutingMethods.routePopular)}
+     </List>
+   );
 }
 
 
@@ -42,17 +75,17 @@ function Drawer(props: any) {
    }
 
    return (
-      <div className='drawer'>
-         <DrawerMui
-            variant="temporary"
-            anchor={'left'}
-            open={isDrawerOpen}
-            onClose={renderDrawerOpen}
-         >
-            <DrawerList />
-         </DrawerMui>
-      </div>
-   )
+     <div className="drawer">
+       <DrawerMui
+         variant="temporary"
+         anchor={"left"}
+         open={isDrawerOpen}
+         onClose={renderDrawerOpen}
+       >
+         <DrawerList drawerClose={renderDrawerOpen} />
+       </DrawerMui>
+     </div>
+   );
 }
 
 export default Drawer

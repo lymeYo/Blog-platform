@@ -1,5 +1,4 @@
 .header {
-   background-color: #faf;
    color: #000;
    position: relative;
 
@@ -20,6 +19,7 @@
    .nav-area {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       width: 300px;
 
       .create-button {
@@ -57,16 +57,26 @@
    }
 
    .drawer {
-      .list {
-         border: 2px solid #000;
-         &-item {
-            padding: 0 50px;
-            border: 2px solid #000;
-         }
-      }
    }
    
    .login-area {
+    .user-info {
+      display: flex;
+      align-items: center;
+      .username {
+        padding: 0 10px 0 0;
+      }
+      .avatar {
+        padding: 0;
+        width: 60px;
+        border-radius: 10px;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    
       .modal-wrapper {
          .login-tab-panels {
             margin: 0px 0px 30px 0px;
