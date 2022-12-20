@@ -14,12 +14,16 @@ const class_validator_1 = require("class-validator");
 class CreateUserDto {
 }
 __decorate([
-    (0, class_validator_1.IsEmail)(undefined, { message: 'Почта указана в неверном формате' }),
+    (0, class_validator_1.Length)(3, 25, { message: "Ваше имя должно быть не менее 6 и не более 30 символов" }),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "fullName", void 0);
+__decorate([
+    (0, class_validator_1.IsEmail)(undefined, { message: "Почта указана в неверном формате" }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
 __decorate([
-    password,
-    __metadata("design:type", Object)
-], CreateUserDto.prototype, "", void 0);
+    (0, class_validator_1.Length)(6, 30, { message: "Пароль должен быть не менее 6 и не более 30 символов" }),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "password", void 0);
 exports.CreateUserDto = CreateUserDto;
 //# sourceMappingURL=create-user.dto.js.map

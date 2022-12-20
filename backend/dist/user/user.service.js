@@ -27,14 +27,20 @@ let UserService = class UserService {
     findAll() {
         return this.repository.find();
     }
-    findOne(id) {
-        return this.repository.findOneBy({ id });
+    async findOne(id) {
+        const result = await this.repository.findOneBy({ id });
+        if (!result)
+            throw new common_1.NotFoundException('Пользователь не найден');
+        return result;
     }
-    update(id, dto) {
-        return this.repository.update(id, dto);
+    async update(id, dto) {
+        const result = await this.repository.update(id, dto);
+        if (!result)
+            throw new common_1.NotFoundException('Пользователь не найден');
+        return result;
     }
     remove(id) {
-        return `This action removes a #${id} user`;
+        return this.repository.delete(id);
     }
 };
 UserService = __decorate([

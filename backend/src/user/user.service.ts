@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository, UpdateResult } from 'typeorm';
+import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -21,15 +21,23 @@ export class UserService {
     return this.repository.find();
   }
 
-  findOne(id: number): Promise<UserEntity> {
-    return this.repository.findOneBy({ id });
+  async findOne(id: string): Promise<UserEntity> {
+    const result = await this.repository.findOneBy({ id });
+
+    if (!result) throw new NotFoundException('Пользователь не найден');
+
+    return result;
   }
 
-  update(id: number, dto: UpdateUserDto): Promise<UpdateResult> {
-    return this.repository.update(id, dto);
+  async update(id: string, dto: UpdateUserDto): Promise<UpdateResult> {
+    const result = await this.repository.update(id, dto);
+
+    if (!result) throw new NotFoundException('Пользователь не найден');
+
+    return result;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string): Promise<DeleteResult> {
+    return this.repository.delete(id);
   }
 }

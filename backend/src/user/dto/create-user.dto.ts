@@ -1,6 +1,8 @@
 import { IsEmail, Length } from "class-validator";
 
 export class CreateUserDto {
+  id: string;
+  
   @Length(3, 25, {message: "Ваше имя должно быть не менее 6 и не более 30 символов"})
   fullName: string;
 
@@ -8,5 +10,5 @@ export class CreateUserDto {
   email: string;
 
   @Length(6, 30, {message: "Пароль должен быть не менее 6 и не более 30 символов"})
-  password?: string;
+  password: string;
 }
