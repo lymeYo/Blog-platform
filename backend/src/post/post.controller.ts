@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { SearchPostDto } from './dto/search-post-dto';
 
 @Controller('post')
 export class PostController {
@@ -15,6 +16,16 @@ export class PostController {
   @Get()
   findAll() {
     return this.postService.findAll();
+  }
+
+  @Get('/sort-by/:type/:increaseStatus')
+  sortByType(@Param('type') type: 'popular' | 'rating', @Param('increaseStatus') increaseStatus: 'desc' | 'asc') {
+    return this.postService.findAllBySort(type, increaseStatus);
+  }
+
+  @Get('/search')
+  searchPosts(@Query() dto: SearchPostDto) {
+    return this.postService.search(dto)
   }
 
   @Get(':id')

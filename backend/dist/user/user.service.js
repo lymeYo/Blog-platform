@@ -27,8 +27,14 @@ let UserService = class UserService {
     findAll() {
         return this.repository.find();
     }
-    async findOne(id) {
+    async findOneById(id) {
         const result = await this.repository.findOneBy({ id });
+        if (!result)
+            throw new common_1.NotFoundException('Пользователь не найден');
+        return result;
+    }
+    async findOneByName(fullName) {
+        const result = await this.repository.findOneBy({ fullName });
         if (!result)
             throw new common_1.NotFoundException('Пользователь не найден');
         return result;

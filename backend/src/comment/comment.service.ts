@@ -23,7 +23,7 @@ export class CommentService {
   }
 
   findAll(): Promise<CommentEntity[]> {
-    return this.repository.find();
+    return this.repository.find({ relations: ['user', 'post'] });
   }
 
   async findOne(id: string): Promise<CommentEntity> {

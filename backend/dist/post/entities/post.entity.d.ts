@@ -5,6 +5,7 @@ export declare class PostEntity {
     title: string;
     body: string;
     rating: number;
+    views: number;
     createdAt: Date;
     updatedAt: Date;
 }

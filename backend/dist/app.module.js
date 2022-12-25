@@ -18,6 +18,7 @@ const post_module_1 = require("./post/post.module");
 const post_entity_1 = require("./post/entities/post.entity");
 const comment_module_1 = require("./comment/comment.module");
 const comment_entity_1 = require("./comment/entities/comment.entity");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -34,11 +35,12 @@ AppModule = __decorate([
                 database: process.env.POSTGRES_DB,
                 host: process.env.POSTGRES_HOST,
                 entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity],
-                synchronize: true,
+                synchronize: process.env.NODE_ENV == 'development' ? true : false,
             }),
             user_module_1.UserModule,
             post_module_1.PostModule,
             comment_module_1.CommentModule,
+            auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

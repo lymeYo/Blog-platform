@@ -23,17 +23,47 @@ let PostService = class PostService {
     }
     create(dto) {
         return this.repository.save(Object.assign(Object.assign({}, dto), { userId: null, user: {
-                id: dto.userId
+                id: dto.userId,
             } }));
     }
     findAll() {
-        return this.repository.find();
+        return this.repository.find({
+            relations: ['user'],
+            order: {
+                createdAt: 'DESC',
+            },
+        });
     }
     async findOne(id) {
-        const result = await this.repository.findOneBy({ id });
-        if (!result)
-            throw new common_1.NotFoundException('Пост не найден');
-        return result;
+        const qb = await this.repository.createQueryBuilder('posts');
+        await qb
+            .whereInIds(id)
+            .update()
+            .set({
+            views: () => 'views + 1',
+        })
+            .execute();
+        return this.repository.findOneBy({ id });
+    }
+    async findAllBySort(type, increaseStatus) {
+        const qb = this.repository.createQueryBuilder('posts');
+        qb.orderBy(type == 'popular' ? 'views' : 'rating', increaseStatus == 'desc' ? 'DESC' : 'ASC');
+        const items = await qb.getMany();
+        return items;
+    }
+    async search(dto) {
+        console.log(dto);
+        const qb = this.repository.createQueryBuilder('posts');
+        qb.limit(dto.limit || 0);
+        qb.take(dto.take || 10);
+        if (dto.sortBy)
+            qb.orderBy(dto.sortBy, dto.increaseStatus ? dto.increaseStatus : 'DESC');
+        if (dto.body)
+            qb.andWhere('post.body ILIKE :body', { body: `%${dto.body}%` });
+        if (dto.title)
+            qb.andWhere('post.title ILIKE :title', { title: `%${dto.title}%` });
+        const items = await qb.getMany();
+        return items;
     }
     async update(id, dto) {
         const result = await this.repository.update(id, dto);

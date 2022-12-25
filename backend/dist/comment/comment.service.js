@@ -31,7 +31,7 @@ let CommentService = class CommentService {
         });
     }
     findAll() {
-        return this.repository.find();
+        return this.repository.find({ relations: ['user', 'post'] });
     }
     async findOne(id) {
         const result = await this.repository.findOneBy({ id });

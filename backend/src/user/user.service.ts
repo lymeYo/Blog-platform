@@ -21,8 +21,16 @@ export class UserService {
     return this.repository.find();
   }
 
-  async findOne(id: string): Promise<UserEntity> {
+  async findOneById(id: string): Promise<UserEntity> {
     const result = await this.repository.findOneBy({ id });
+
+    if (!result) throw new NotFoundException('Пользователь не найден');
+
+    return result;
+  }
+
+  async findOneByName(fullName: string): Promise<UserEntity> {
+    const result = await this.repository.findOneBy({ fullName });
 
     if (!result) throw new NotFoundException('Пользователь не найден');
 

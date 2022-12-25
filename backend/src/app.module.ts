@@ -9,6 +9,7 @@ import { PostModule } from './post/post.module';
 import { PostEntity } from './post/entities/post.entity';
 import { CommentModule } from './comment/comment.module';
 import { CommentEntity } from './comment/entities/comment.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,11 +24,12 @@ import { CommentEntity } from './comment/entities/comment.entity';
       database: process.env.POSTGRES_DB,
       host: process.env.POSTGRES_HOST,
       entities: [UserEntity, PostEntity, CommentEntity],
-      synchronize: true,
+      synchronize: process.env.NODE_ENV == 'development' ? true : false, //! в зависимости от режима разработки ставлю синхронизацию
     }),
     UserModule,
     PostModule,
     CommentModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

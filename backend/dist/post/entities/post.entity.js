@@ -36,6 +36,12 @@ __decorate([
     __metadata("design:type", Number)
 ], PostEntity.prototype, "rating", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        default: 0,
+    }),
+    __metadata("design:type", Number)
+], PostEntity.prototype, "views", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)({ type: 'timestamp' }),
     __metadata("design:type", Date)
 ], PostEntity.prototype, "createdAt", void 0);

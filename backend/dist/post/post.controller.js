@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const post_service_1 = require("./post.service");
 const create_post_dto_1 = require("./dto/create-post.dto");
 const update_post_dto_1 = require("./dto/update-post.dto");
+const search_post_dto_1 = require("./dto/search-post-dto");
 let PostController = class PostController {
     constructor(postService) {
         this.postService = postService;
@@ -26,6 +27,12 @@ let PostController = class PostController {
     }
     findAll() {
         return this.postService.findAll();
+    }
+    sortByType(type, increaseStatus) {
+        return this.postService.findAllBySort(type, increaseStatus);
+    }
+    searchPosts(dto) {
+        return this.postService.search(dto);
     }
     findOne(id) {
         return this.postService.findOne(id);
@@ -50,6 +57,21 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('/sort-by/:type/:increaseStatus'),
+    __param(0, (0, common_1.Param)('type')),
+    __param(1, (0, common_1.Param)('increaseStatus')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "sortByType", null);
+__decorate([
+    (0, common_1.Get)('/search'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [search_post_dto_1.SearchPostDto]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "searchPosts", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
