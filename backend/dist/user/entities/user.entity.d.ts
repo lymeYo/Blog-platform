@@ -1,6 +1,6 @@
 export declare class UserEntity {
-    id: string;
-    fullName: string;
+    id: number;
+    username: string;
     email: string;
     password: string;
 }

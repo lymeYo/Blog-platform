@@ -45,19 +45,12 @@ let PostService = class PostService {
             .execute();
         return this.repository.findOneBy({ id });
     }
-    async findAllBySort(type, increaseStatus) {
-        const qb = this.repository.createQueryBuilder('posts');
-        qb.orderBy(type == 'popular' ? 'views' : 'rating', increaseStatus == 'desc' ? 'DESC' : 'ASC');
-        const items = await qb.getMany();
-        return items;
-    }
     async search(dto) {
-        console.log(dto);
         const qb = this.repository.createQueryBuilder('posts');
         qb.limit(dto.limit || 0);
         qb.take(dto.take || 10);
         if (dto.sortBy)
-            qb.orderBy(dto.sortBy, dto.increaseStatus ? dto.increaseStatus : 'DESC');
+            qb.orderBy(dto.sortBy, dto.increaseStatus || 'DESC');
         if (dto.body)
             qb.andWhere('post.body ILIKE :body', { body: `%${dto.body}%` });
         if (dto.title)

@@ -22,10 +22,12 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
 let AuthService = class AuthService {
-    constructor(userService) {
+    constructor(userService, jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
     async validateUser(username, userPassword) {
         const user = await this.userService.findOneByName(username);
@@ -34,10 +36,29 @@ let AuthService = class AuthService {
         const { password } = user, result = __rest(user, ["password"]);
         return result;
     }
+    async login(user) {
+        const { password } = user, userData = __rest(user, ["password"]);
+        return Object.assign(Object.assign({}, userData), { access_token: this.generateJwtToken(userData) });
+    }
+    async register(dto) {
+        try {
+            const _a = await this.userService.create(dto), { password } = _a, userData = __rest(_a, ["password"]);
+            return Object.assign(Object.assign({}, userData), { access_token: this.generateJwtToken(userData) });
+        }
+        catch (_b) {
+            console.log(dto);
+            throw new common_1.ForbiddenException(undefined, 'Неверные данные для регистрации');
+        }
+    }
+    generateJwtToken(data) {
+        const payload = { username: data.username, sub: data.id };
+        return this.jwtService.sign(payload);
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        jwt_1.JwtService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

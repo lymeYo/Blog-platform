@@ -12,7 +12,7 @@ import { postRatingRender } from "../../redux/reducers/posts/postsCreators"
 import React from "react"
 
 
-export const PostIdContext = React.createContext(null)
+export const PostIdContext = React.createContext('')
 
 
 function InfoButtons(props: any) {
@@ -33,7 +33,7 @@ function InfoButtons(props: any) {
 }
 
 function PostInfo(props: any) {
-  const { userName, avatarSrc } = useSelector(({ login }) => ({
+  const { userName, avatarSrc } = useSelector(({ login }: any) => ({
     userName: login.name ,
     avatarSrc: login.avatarSrc,
   }))
@@ -57,14 +57,17 @@ function PostContent(props: any) {
   let text: string = props.text
 
   if (!props.isFullPost) { // урезаю количество слов, не обрезая слово поплам, если пост не открыт 
-    let maxPreviewTextLength = 350
+    console.log(text);
+    
+    let maxPreviewTextLength = 20
     text = text.substring(0, maxPreviewTextLength)
-    console.log(text[text.length - 1] == " ");
     
     while (text[text.length - 1] != " " && maxPreviewTextLength > 0) {
       maxPreviewTextLength--
       text = text.substring(0, maxPreviewTextLength)
     }
+
+    text += '...'
   }
   
   return (
@@ -75,10 +78,12 @@ function PostContent(props: any) {
 }
 
 function PostBody(props: any) {
-  const { title, text } = useSelector(({ posts }) => ({
+  const { title, text } = useSelector(({ posts }: any) => ({
     title: posts.getPostById(props.postId).title,
     text: posts.getPostById(props.postId).text,
   }))
+  
+  console.log(title);
   
 
   return (
@@ -119,8 +124,8 @@ function ButtonsRow(props: any) {
 
 function PostButtons(props: any) {
   const dispatch = useDispatch()
-  const { postRating } = useSelector(({ posts }) => ({
-    postRating: posts.getPostById(props.postId).rating
+  const { postRating } = useSelector(({ posts }: any) => ({
+    postRating: posts.getPostById(props.postId).rating,
   }))
   
   const upClickFunction = () => {
@@ -142,6 +147,7 @@ function PostButtons(props: any) {
   )
 }
 
+
 export default function PostItem(props: any) {
   const { isFullPost, postId } = props
 
@@ -160,10 +166,12 @@ export default function PostItem(props: any) {
 
   if (isFullPost) Content = <div className="post-item-wrapper">{Content}</div>
 
-
   return (
     <>
-      <PostIdContext.Provider value={postId}> {Content} </PostIdContext.Provider>
+      <PostIdContext.Provider value={postId}>
+        {" "}
+        {Content}{" "}
+      </PostIdContext.Provider>
     </>
   )
 }

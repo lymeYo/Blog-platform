@@ -23,7 +23,6 @@ let CommentService = class CommentService {
     }
     create(dto) {
         return this.repository.save({
-            id: dto.id,
             text: dto.text,
             rating: dto.rating,
             post: { id: dto.postId },

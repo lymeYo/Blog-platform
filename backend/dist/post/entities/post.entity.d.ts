@@ -1,6 +1,6 @@
 import { UserEntity } from "src/user/entities/user.entity";
 export declare class PostEntity {
-    id: string;
+    id: number;
     user: UserEntity;
     title: string;
     body: string;

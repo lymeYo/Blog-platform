@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Put, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -18,28 +18,23 @@ export class PostController {
     return this.postService.findAll();
   }
 
-  @Get('/sort-by/:type/:increaseStatus')
-  sortByType(@Param('type') type: 'popular' | 'rating', @Param('increaseStatus') increaseStatus: 'desc' | 'asc') {
-    return this.postService.findAllBySort(type, increaseStatus);
-  }
-
-  @Get('/search')
+  @Get('search') //parameters here
   searchPosts(@Query() dto: SearchPostDto) {
-    return this.postService.search(dto)
+    return this.postService.search(dto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.postService.findOne(id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+  @Patch(':id')
+  update(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(id, updatePostDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.postService.remove(id);
   }
 }

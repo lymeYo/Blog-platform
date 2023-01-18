@@ -4,8 +4,8 @@ import { useSelector } from "react-redux"
 import PostItem from "./PostItem"
 
 function PostsList(props: any) {
-  const { postsList } = useSelector(({ posts }) => ({
-    postsList: posts.postsList 
+  const { postsList } = useSelector(({ posts }: any) => ({
+    postsList: posts.postsList,
   }))
 
   const list = postsList.map((postData) => {

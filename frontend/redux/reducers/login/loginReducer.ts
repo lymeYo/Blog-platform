@@ -1,26 +1,34 @@
 import produce, { Draft } from 'immer'
 import { actionInterface } from '../../../utils/constants'
-import { v4 as uuidv4 } from "uuid"
+import { loginOperations } from './loginCreators'
 
 
 interface initialStateInterface {
-  userId: string,
-  isAuth: boolean,
-  name: string,
-  avatarSrc: string,
+  isAuth: boolean
+  name: string
+  avatarSrc: string
+  id: number | null
+  email: string | null
 }
 
 let initialState: initialStateInterface = {
-  userId: uuidv4(),
-  isAuth: true,
-  name: "lyme",
-  avatarSrc: "https://leonardo.osnova.io/f488fca4-88d6-c978-d052-4d49a3a62a44/-/format/webp/",
+  isAuth: false,
+  name: '',
+  avatarSrc: '',
+  id: null,
+  email: null
 }
 
 
 const loginReducer = produce((draft: Draft<initialStateInterface>, action: actionInterface) => {
   switch (action.type) {
-
+    case loginOperations.SET_LOGIN_DATA:
+      console.log(action);
+      
+      draft.isAuth = true
+      draft.name = action.username
+      draft.id = action.id
+      draft.email = action.email
   }
 
   return draft

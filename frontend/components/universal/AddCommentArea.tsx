@@ -42,11 +42,11 @@ function AddCommentButtons(props: any) {
 
 function AddCommentArea(props: any) {
   const dispatch = useDispatch()
-  const postId = React.useContext(PostIdContext)
+  const postId: string = React.useContext(PostIdContext)
   
   const [isButtonsVisible, setButtonsVisible] = React.useState(false)
-  const { authorId } = useSelector(({ login }) => ({
-    authorId: login.userId
+  const { authorId } = useSelector(({ login }: any) => ({
+    authorId: login.userId,
   }))
   
   React.useEffect(() => {

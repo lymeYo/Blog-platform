@@ -14,7 +14,6 @@ export class CommentService {
 
   create(dto: CreateCommentDto) {
     return this.repository.save({
-      id: dto.id,
       text: dto.text,
       rating: dto.rating,
       post: { id: dto.postId },
@@ -26,7 +25,7 @@ export class CommentService {
     return this.repository.find({ relations: ['user', 'post'] });
   }
 
-  async findOne(id: string): Promise<CommentEntity> {
+  async findOne(id: number): Promise<CommentEntity> {
     const result = await this.repository.findOneBy({ id });
 
     if (!result) throw new NotFoundException('Комментарий не найден');
@@ -34,7 +33,7 @@ export class CommentService {
     return result;
   }
 
-  async update(id: string, dto: UpdateCommentDto): Promise<UpdateResult> {
+  async update(id: number, dto: UpdateCommentDto): Promise<UpdateResult> {
     const result = await this.repository.update(id, dto);
 
     if (!result) throw new NotFoundException('Комментарий не найден');
@@ -42,7 +41,7 @@ export class CommentService {
     return result;
   }
 
-  remove(id: string): Promise<DeleteResult> {
+  remove(id: number): Promise<DeleteResult> {
     return this.repository.delete(id);
   }
 }

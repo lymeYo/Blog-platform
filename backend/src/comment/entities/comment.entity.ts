@@ -1,18 +1,18 @@
 import { PostEntity } from "src/post/entities/post.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity('comments')
 export class CommentEntity {
-  @PrimaryColumn()
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @ManyToOne(() => UserEntity, {nullable: false})
+  @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
-  @ManyToOne(() => PostEntity, {nullable: false})
+  @ManyToOne(() => PostEntity, { nullable: false })
   @JoinColumn({ name: 'postId' })
   post: PostEntity;
 

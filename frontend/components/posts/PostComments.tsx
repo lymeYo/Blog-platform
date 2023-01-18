@@ -12,7 +12,7 @@ function CommentsList(props: any) {
   const postId = React.useContext(PostIdContext)
   
   
-  const { commentsDataList } = useSelector(({ posts }) => ({
+  const { commentsDataList } = useSelector(({ posts }: any) => ({
     commentsDataList: posts.getPostById(postId).comments,
   }))
   const commentsList = commentsDataList.map((comment) => {

@@ -33,8 +33,8 @@ let UserService = class UserService {
             throw new common_1.NotFoundException('Пользователь не найден');
         return result;
     }
-    async findOneByName(fullName) {
-        const result = await this.repository.findOneBy({ fullName });
+    async findOneByName(username) {
+        const result = await this.repository.findOneBy({ username });
         if (!result)
             throw new common_1.NotFoundException('Пользователь не найден');
         return result;
@@ -43,7 +43,8 @@ let UserService = class UserService {
         const result = await this.repository.update(id, dto);
         if (!result)
             throw new common_1.NotFoundException('Пользователь не найден');
-        return result;
+        const user = await this.findOneById(id);
+        return user;
     }
     remove(id) {
         return this.repository.delete(id);

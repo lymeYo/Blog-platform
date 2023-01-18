@@ -9,17 +9,15 @@ export declare class PostService {
     create(dto: CreatePostDto): Promise<{
         userId: any;
         user: {
-            id: string;
+            id: number;
         };
-        id: string;
         title: string;
         body: string;
         rating: number;
     } & PostEntity>;
     findAll(): Promise<PostEntity[]>;
-    findOne(id: string): Promise<PostEntity>;
-    findAllBySort(type: 'popular' | 'rating', increaseStatus: 'desc' | 'asc'): Promise<PostEntity[]>;
+    findOne(id: number): Promise<PostEntity>;
     search(dto: SearchPostDto): Promise<PostEntity[]>;
-    update(id: string, dto: UpdatePostDto): Promise<UpdateResult>;
-    remove(id: string): Promise<DeleteResult>;
+    update(id: number, dto: UpdatePostDto): Promise<UpdateResult>;
+    remove(id: number): Promise<DeleteResult>;
 }

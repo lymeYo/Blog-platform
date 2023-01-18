@@ -1,3 +1,4 @@
+import React from 'react';
 import Router from 'next/router'
 import { useRouter } from 'next/router'
 import Posts from '../components/posts/Posts';

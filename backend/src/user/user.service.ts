@@ -14,14 +14,13 @@ export class UserService {
 
   create(dto: CreateUserDto) {
     return this.repository.save(dto); // передаю весь dto так как в нем есть все необходимые свойства
-    // return 'This action adds a new user';
   }
 
   findAll(): Promise<UserEntity[]> {
     return this.repository.find();
   }
 
-  async findOneById(id: string): Promise<UserEntity> {
+  async findOneById(id: number): Promise<UserEntity> {
     const result = await this.repository.findOneBy({ id });
 
     if (!result) throw new NotFoundException('Пользователь не найден');
@@ -29,23 +28,25 @@ export class UserService {
     return result;
   }
 
-  async findOneByName(fullName: string): Promise<UserEntity> {
-    const result = await this.repository.findOneBy({ fullName });
-
+  async findOneByName(username: string): Promise<UserEntity> {
+    const result = await this.repository.findOneBy({ username });
+    
     if (!result) throw new NotFoundException('Пользователь не найден');
 
     return result;
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<UpdateResult> {
+  async update(id: number, dto: UpdateUserDto): Promise<UserEntity> {
     const result = await this.repository.update(id, dto);
 
     if (!result) throw new NotFoundException('Пользователь не найден');
 
-    return result;
+    const user = await this.findOneById(id);
+    
+    return user;
   }
 
-  remove(id: string): Promise<DeleteResult> {
+  remove(id: number): Promise<DeleteResult> {
     return this.repository.delete(id);
   }
 }

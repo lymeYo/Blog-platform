@@ -1,1 +1,0 @@
-{"c":["pages/post/[id]","pages/index","webpack"],"r":["pages/index"],"m":["./components/posts/Posts.tsx","./components/posts/PostsList.tsx","./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=%2Fhome%2Flyme%2FDocuments%2FProjects%2FBlog%2Ffrontend%2Fpages%2Findex.tsx&page=%2F!","./pages/index.tsx"]}

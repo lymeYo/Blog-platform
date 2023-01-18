@@ -1,15 +1,19 @@
 import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm"
-import { IsEmail } from 'class-validator';
 
 @Entity('users')
 export class UserEntity {
-  @PrimaryColumn()
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column()
-  fullName: string;
+  @Column({
+    unique: true,
+  })
+  username: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+    unique: true,
+  })
   email: string;
 
   @Column()

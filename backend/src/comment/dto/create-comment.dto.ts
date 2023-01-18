@@ -1,11 +1,9 @@
 export class CreateCommentDto {
-  id: string;
-
   text: string;
 
   rating: number;
 
-  postId: string;
+  postId: number;
 
-  userId: string;
+  userId: number;
 }

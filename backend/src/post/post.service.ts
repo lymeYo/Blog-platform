@@ -32,12 +32,7 @@ export class PostService {
     });
   }
 
-  async findOne(id: string): Promise  <PostEntity> {
-    // const result = await this.repository.findOneBy({ id });
-    // if (!result) throw new NotFoundException('Пост не найден');
-
-    // await this.repository.update(id, {views: result.views + 1})
-
+  async findOne(id: number): Promise<PostEntity> {
     const qb = await this.repository.createQueryBuilder('posts');
 
     await qb //инкрементирую количесвто просмотров с каждым вызовом статьи
@@ -51,30 +46,13 @@ export class PostService {
     return this.repository.findOneBy({ id });
   }
 
-  async findAllBySort(
-    type: 'popular' | 'rating',
-    increaseStatus: 'desc' | 'asc',
-  ) {
-    const qb = this.repository.createQueryBuilder('posts');
-    qb.orderBy(
-      type == 'popular' ? 'views' : 'rating',
-      increaseStatus == 'desc' ? 'DESC' : 'ASC',
-    );
-
-    const items = await qb.getMany();
-
-    return items;
-  }
-
   async search(dto: SearchPostDto) {
-    console.log(dto);
-
     const qb = this.repository.createQueryBuilder('posts');
     qb.limit(dto.limit || 0);
     qb.take(dto.take || 10);
 
     if (dto.sortBy)
-      qb.orderBy(dto.sortBy, dto.increaseStatus ? dto.increaseStatus : 'DESC');
+      qb.orderBy(dto.sortBy, dto.increaseStatus || 'DESC');
 
     if (dto.body)
       qb.andWhere('post.body ILIKE :body', { body: `%${dto.body}%` });
@@ -86,14 +64,14 @@ export class PostService {
     return items;
   }
 
-  async update(id: string, dto: UpdatePostDto): Promise<UpdateResult> {
+  async update(id: number, dto: UpdatePostDto): Promise<UpdateResult> {
     const result = await this.repository.update(id, dto);
     if (!result) throw new NotFoundException('Пост не найден');
 
     return result;
   }
 
-  remove(id: string): Promise<DeleteResult> {
+  remove(id: number): Promise<DeleteResult> {
     return this.repository.delete(id);
   }
 }
