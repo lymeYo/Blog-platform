@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux"
 
 import StatisticsButtons from "../universal/StatisticsButtons"
 import { commentRatingRender, deleteComment } from "../../redux/reducers/posts/postsCreators"
-import { PostIdContext } from "./PostItem"
+import { PostIdContext } from "./postItem"
+import {TcommentRequest} from "../../utils/api/types";
+import {MyApi} from "../../utils/api";
 
 function OptionList(props: any) {
   const dispatch = useDispatch()
@@ -100,11 +102,14 @@ function CommentButtons(props: any) {
 
 function Comment(props: any) {
   const dispatch = useDispatch()
-  const { name, time, rating, text, commentId, postId } = props
-  const ratingRender = (isRatingup: boolean) => {
-    dispatch(commentRatingRender(isRatingup, commentId, postId))
+  const { name, time, rating, text, id } = props
+  const ratingRender = async (isRatingUp: boolean) => {
+    const commentData: Partial<TcommentRequest> = {
+      text,
+      rating: isRatingUp ? rating + 1 : rating - 1
+    }
+    await MyApi().comment.updateStatistics(commentData, id)
   }
-  
   const downClick = () => ratingRender(false)
   const upClick = () => ratingRender(true)
   
@@ -128,7 +133,7 @@ function Comment(props: any) {
         />
       </div>
       <div className="comment-text">{text}</div>
-      <CommentButtons commentId={commentId} />
+      <CommentButtons commentId={id} />
     </div>
   )
 }

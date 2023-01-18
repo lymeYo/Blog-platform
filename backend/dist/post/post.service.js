@@ -21,58 +21,68 @@ let PostService = class PostService {
     constructor(repository) {
         this.repository = repository;
     }
-    create(dto) {
-        return this.repository.save(Object.assign(Object.assign({}, dto), { userId: null, user: {
-                id: dto.userId,
-            } }));
-    }
-    findAll() {
-        return this.repository.find({
-            relations: ['user'],
-            order: {
-                createdAt: 'DESC',
+    async create(dto, userId) {
+        const safetyDto = {
+            user: {
+                id: userId,
             },
+            title: dto.title,
+            body: dto.body,
+            rating: dto.rating,
+        };
+        return this.repository.save(safetyDto);
+    }
+    async update(id, dto, userId, withoutUserAccess) {
+        const post = await this.repository.findOneBy({ id });
+        if (!post)
+            throw new common_1.NotFoundException('Пост не найден');
+        if (!withoutUserAccess && post.user.id != userId)
+            throw new common_1.NotFoundException("У вас нет доступа к этому посту");
+        const safetyDto = {
+            title: dto.title,
+            body: dto.body,
+            rating: dto.rating,
+        };
+        return this.repository.update(id, safetyDto);
+    }
+    async remove(id, userId) {
+        const post = await this.repository.findOneBy({ id });
+        if (!post)
+            throw new common_1.NotFoundException('Пост не найден');
+        if (post.user.id != userId)
+            throw new common_1.NotFoundException("У вас нет доступа к этому посту");
+        return this.repository.delete(id);
+    }
+    async findAll() {
+        return await this.repository.find({
+            order: {
+                createdAt: "DESC"
+            }
         });
     }
     async findOne(id) {
-        const qb = await this.repository.createQueryBuilder('posts');
+        const qb = await this.repository.createQueryBuilder("posts");
         await qb
             .whereInIds(id)
             .update()
             .set({
-            views: () => 'views + 1',
+            views: () => "views + 1"
         })
             .execute();
         return this.repository.findOneBy({ id });
     }
-    async findAllBySort(type, increaseStatus) {
-        const qb = this.repository.createQueryBuilder('posts');
-        qb.orderBy(type == 'popular' ? 'views' : 'rating', increaseStatus == 'desc' ? 'DESC' : 'ASC');
-        const items = await qb.getMany();
-        return items;
-    }
     async search(dto) {
-        console.log(dto);
-        const qb = this.repository.createQueryBuilder('posts');
+        const qb = this.repository.createQueryBuilder("posts");
         qb.limit(dto.limit || 0);
         qb.take(dto.take || 10);
         if (dto.sortBy)
-            qb.orderBy(dto.sortBy, dto.increaseStatus ? dto.increaseStatus : 'DESC');
+            qb.orderBy(dto.sortBy, dto.increaseStatus || "DESC");
         if (dto.body)
-            qb.andWhere('post.body ILIKE :body', { body: `%${dto.body}%` });
+            qb.andWhere("post.body ILIKE :body", { body: `%${dto.body}%` });
         if (dto.title)
-            qb.andWhere('post.title ILIKE :title', { title: `%${dto.title}%` });
+            qb.andWhere("post.title ILIKE :title", { title: `%${dto.title}%` });
         const items = await qb.getMany();
         return items;
-    }
-    async update(id, dto) {
-        const result = await this.repository.update(id, dto);
-        if (!result)
-            throw new common_1.NotFoundException('Пост не найден');
-        return result;
-    }
-    remove(id) {
-        return this.repository.delete(id);
     }
 };
 PostService = __decorate([

@@ -14,19 +14,24 @@ const typeorm_1 = require("typeorm");
 let UserEntity = class UserEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
 ], UserEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({
+        unique: true,
+    }),
     __metadata("design:type", String)
-], UserEntity.prototype, "fullName", void 0);
+], UserEntity.prototype, "username", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({
+        nullable: true,
+        unique: true,
+    }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ select: false }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 UserEntity = __decorate([

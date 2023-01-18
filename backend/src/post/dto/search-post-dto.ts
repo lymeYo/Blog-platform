@@ -2,15 +2,15 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreatePostDto } from './create-post.dto';
 
 export class SearchPostDto {
-  title?: string;
+  title: string;
 
-  body?: string;
+  body: string;
 
-  limit?: number;
+  limit: number;
 
-  take?: number;
+  take: number;
 
-  sortBy?: 'views' | 'popular';
+  sortBy: 'views' | 'popular';
 
-  increaseStatus?: 'DESC' | 'ASC';
+  increaseStatus: 'DESC' | 'ASC';
 }

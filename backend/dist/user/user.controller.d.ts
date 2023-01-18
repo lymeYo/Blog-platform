@@ -1,12 +1,11 @@
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    create(dto: CreateUserDto): Promise<CreateUserDto & import("./entities/user.entity").UserEntity>;
     findAll(): Promise<import("./entities/user.entity").UserEntity[]>;
-    findOne(id: string): Promise<import("./entities/user.entity").UserEntity>;
-    update(id: string, updateUserDto: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
-    remove(id: string): Promise<import("typeorm").DeleteResult>;
+    getProfile(req: any): Promise<any>;
+    findOne(id: number): Promise<import("./entities/user.entity").UserEntity>;
+    update(req: any, updateUserDto: UpdateUserDto): Promise<import("./entities/user.entity").UserEntity>;
+    remove(id: number): Promise<import("typeorm").DeleteResult>;
 }

@@ -1,11 +1,9 @@
 import React from "react"
 import { Button, IconButton } from "@mui/material"
 import CollectionsIcon from "@mui/icons-material/Collections"
-import { v4 as uuidv4 } from "uuid"
-import { postCommentInterface } from "../../redux/reducers/posts/postsReducer"
-import { useDispatch, useSelector } from "react-redux"
-import { publishComment } from "../../redux/reducers/posts/postsCreators"
-import { PostIdContext } from "../posts/PostItem"
+
+import {TcommentRequest} from "../../utils/api/types";
+import {MyApi} from "../../utils/api";
 
 function AddCommentInput(props: any) {
   const inputRef: any = React.createRef()
@@ -41,14 +39,57 @@ function AddCommentButtons(props: any) {
 }
 
 function AddCommentArea(props: any) {
-  const dispatch = useDispatch()
-  const postId = React.useContext(PostIdContext)
-  
   const [isButtonsVisible, setButtonsVisible] = React.useState(false)
-  const { authorId } = useSelector(({ login }) => ({
-    authorId: login.userId
+  React.useEffect(() => {
+    const clickHandler = (event: any) => {
+      if (
+        event.target &&
+        !event.target.closest(".add-comment-area") &&
+        !event.target.classList.contains("add-comment-area")
+      ) {
+        setButtonsVisible(false)
+      } else {
+        setButtonsVisible(true)
+      }
+    }
+    document.addEventListener("click", clickHandler)
+
+    return () => {document.removeEventListener("click", clickHandler)}
+  }, []) //закрытие блока с комментариями по нажатию (не стал использовать mui оболочку)
+
+  const [commentText, setCommentText] = React.useState("")
+
+  const uploadComment = async () => {
+    const data: TcommentRequest = {
+      postId: props.postId,
+      text: commentText,
+      rating: 0,
+    }
+    await MyApi().comment.create(data)
+    setCommentText("")
+  }
+
+  return (
+    <div className="add-comment-area">
+      <AddCommentInput value={commentText} setCommentText={setCommentText} />
+
+      <AddCommentButtons
+        uploadComment={uploadComment}
+        isVisible={isButtonsVisible}
+      />
+    </div>
+  )
+}
+
+/* function AddCommentArea(props: any) {
+  const dispatch = useDispatch()
+  const postId: string = React.useContext(PostIdContext)
+
+  const [isButtonsVisible, setButtonsVisible] = React.useState(false)
+  const { authorId } = useSelector(({ login }: any) => ({
+    authorId: login.userId,
   }))
-  
+
   React.useEffect(() => {
     const clickHandler = (event: any) => {
       if (
@@ -67,12 +108,12 @@ function AddCommentArea(props: any) {
   }, [])
 
   const [commentText, setCommentText] = React.useState("")
-  
+
   const uploadComment = () => {
     const commentFullTime = (new Date()).toString().split(" ")
-    const commentTime = 
-      commentFullTime[1] + " " 
-      + commentFullTime[2] + " " 
+    const commentTime =
+      commentFullTime[1] + " "
+      + commentFullTime[2] + " "
       + commentFullTime[3] + " " + commentFullTime[4].substring(0, 5) //беру строку даты и беру нужные элементы
     const commentData: postCommentInterface = {
       authorId: authorId,
@@ -97,20 +138,7 @@ function AddCommentArea(props: any) {
         isVisible={isButtonsVisible}
       />
     </div>
-    // <PostIdContext.Consumer>
-    //   {postId => (
-    //     <div className="add-comment-area">
-    //       <AddCommentInput setCommentText={setCommentText} />
-
-    //       <AddCommentButtons
-    //         postId={postId}
-    //         uploadComment={uploadComment}
-    //         isVisible={isButtonsVisible}
-    //       />
-    //     </div>
-    //   )}
-    // </PostIdContext.Consumer>
   )
-}
+} */
 
 export default AddCommentArea

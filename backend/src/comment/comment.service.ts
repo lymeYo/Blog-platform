@@ -12,37 +12,42 @@ export class CommentService {
     private repository: Repository<CommentEntity>,
   ) {}
 
-  create(dto: CreateCommentDto) {
-    return this.repository.save({
-      id: dto.id,
+  async create(dto: CreateCommentDto, userId: number) {
+    const safetyDto = {
       text: dto.text,
       rating: dto.rating,
       post: { id: dto.postId },
-      user: { id: dto.userId }
-    });
+      user: { id: userId },
+    }
+    console.log(safetyDto, 'safetyDto');
+    return this.repository.save(safetyDto);
+  }
+
+  async update(id: number, dto: UpdateCommentDto, userId: number, withoutUserAccess?: boolean): Promise<UpdateResult> {
+    const comment = await this.repository.findOneBy({ id })
+    if (!comment) throw new NotFoundException('Комментарий не найден');
+    if (!withoutUserAccess && comment.user.id != userId) throw new NotFoundException("У вас нет доступа к этому комментарию");
+
+    return this.repository.update(id, dto)
+  }
+
+  async remove(id: number, userId: number): Promise<DeleteResult> {
+    const comment = await this.repository.findOneBy({ id })
+    if (!comment) throw new NotFoundException('Комментарий не найден');
+    if (comment.user.id != userId) throw new NotFoundException("У вас нет доступа к этому комментарию");
+
+    return this.repository.delete(id)
   }
 
   findAll(): Promise<CommentEntity[]> {
-    return this.repository.find({ relations: ['user', 'post'] });
+    return this.repository.find();
   }
 
-  async findOne(id: string): Promise<CommentEntity> {
+  async findOne(id: number): Promise<CommentEntity> {
     const result = await this.repository.findOneBy({ id });
 
     if (!result) throw new NotFoundException('Комментарий не найден');
 
     return result;
-  }
-
-  async update(id: string, dto: UpdateCommentDto): Promise<UpdateResult> {
-    const result = await this.repository.update(id, dto);
-
-    if (!result) throw new NotFoundException('Комментарий не найден');
-
-    return result;
-  }
-
-  remove(id: string): Promise<DeleteResult> {
-    return this.repository.delete(id);
   }
 }

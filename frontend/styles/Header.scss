@@ -1,19 +1,26 @@
 .header {
    color: #000;
    position: relative;
+   @include screen-size(14px);
 
    .search-area {
+      max-width: 500px;
+      min-width: 150px;
+      width: 100%;
+      padding: 0 20px;
       &-wrapper{
-         width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .input {
-         color: #fff;
+        color: #fff;
+      }
+      input :focus {
+
       }
       // border: 2px solid #000;
-      width: 500px;
    }
 
    .nav-area {
@@ -37,7 +44,7 @@
       
             .body {
                padding: 7px 10px 7px 7px;
-               width: 110px;
+               width: 100%;
                display: flex;
                align-items: center;
                justify-content: space-between;
@@ -47,6 +54,7 @@
                .text {
                   position: relative;
                   bottom: 2px;
+                  @include screen-size(0px);
                }
             }
          }
@@ -56,32 +64,64 @@
          }
    }
 
+   .invisible {
+      @media screen and (max-width: 800px) {
+        display: none;
+      }
+   } 
+
    .drawer {
    }
    
    .login-area {
-    .user-info {
-      display: flex;
-      align-items: center;
-      .username {
-        padding: 0 10px 0 0;
+      button {
+        @include screen-size(18px);
       }
-      .avatar {
-        padding: 0;
-        width: 60px;
-        border-radius: 10px;
-        overflow: hidden;
-        img {
-          width: 100%;
+      .user-info {
+        display: flex;
+        align-items: center;
+        .username {
+          padding: 0 20px;
+        }
+        .avatar {
+          padding: 0;
+          width: 60px;
+          border-radius: 10px;
+          overflow: hidden;
+          img {
+            width: 100%;
+          }
         }
       }
-    }
-    
       .modal-wrapper {
-         .login-tab-panels {
-            margin: 0px 0px 30px 0px;
-            border: 2px solid silver;
-         }
+          
       }
    }
+}
+
+.login-tab-panels {
+  min-height: 530px ;
+  display: flex;
+  flex-direction: column;
+  .login-field {
+    // border: 2px solid silver;
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // border: 2px solid silver;
+    min-width: 400px;
+    .input-field {
+      min-width: 300px;
+      min-height: 110px;
+      // border: 2px solid silver;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }

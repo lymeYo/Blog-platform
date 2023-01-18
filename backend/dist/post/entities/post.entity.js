@@ -12,17 +12,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostEntity = void 0;
 const user_entity_1 = require("../../user/entities/user.entity");
 const typeorm_1 = require("typeorm");
+const comment_entity_1 = require("../../comment/entities/comment.entity");
 let PostEntity = class PostEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
 ], PostEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, { nullable: false }),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], PostEntity.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, {
+        nullable: false,
+        eager: true,
+    }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], PostEntity.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => comment_entity_1.CommentEntity, (comment) => comment.post, {
+        eager: true,
+    }),
+    __metadata("design:type", Array)
+], PostEntity.prototype, "comments", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

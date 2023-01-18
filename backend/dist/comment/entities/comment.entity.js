@@ -16,17 +16,20 @@ const typeorm_1 = require("typeorm");
 let CommentEntity = class CommentEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
 ], CommentEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, { nullable: false }),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, {
+        nullable: false,
+        eager: true,
+    }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], CommentEntity.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => post_entity_1.PostEntity, { nullable: false }),
-    (0, typeorm_1.JoinColumn)({ name: 'postId' }),
+    (0, typeorm_1.ManyToOne)(() => post_entity_1.PostEntity, {
+        nullable: false,
+    }),
     __metadata("design:type", post_entity_1.PostEntity)
 ], CommentEntity.prototype, "post", void 0);
 __decorate([

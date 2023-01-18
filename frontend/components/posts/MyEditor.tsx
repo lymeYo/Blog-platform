@@ -19,7 +19,6 @@ function MyEditorInner(props: any) {
 
     if (isSaving) { 
       const data = await editor.save()
-      console.log(data, "curEditor")
     }
 
     return editor

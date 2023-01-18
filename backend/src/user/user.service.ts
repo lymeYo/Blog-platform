@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm'
+import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
+import { UserEntity } from './entities/user.entity'
 
 @Injectable()
 export class UserService {
@@ -13,39 +13,93 @@ export class UserService {
   ) {}
 
   create(dto: CreateUserDto) {
-    return this.repository.save(dto); // передаю весь dto так как в нем есть все необходимые свойства
-    // return 'This action adds a new user';
+    const safetyDto: CreateUserDto = {
+      username: dto.username,
+      password: dto.password,
+      email: dto.email || null,
+    }
+    return this.repository.save(safetyDto) // передаю весь dto так как в нем есть все необходимые свойства
   }
 
   findAll(): Promise<UserEntity[]> {
-    return this.repository.find();
+    return this.repository.find()
   }
 
-  async findOneById(id: string): Promise<UserEntity> {
-    const result = await this.repository.findOneBy({ id });
+  async findOneById(id: number): Promise<UserEntity> {
+    const result = await this.repository.findOneBy({ id })
+    if (!result) throw new NotFoundException('Пользователь не найден')
 
-    if (!result) throw new NotFoundException('Пользователь не найден');
-
-    return result;
+    return result
   }
 
-  async findOneByName(fullName: string): Promise<UserEntity> {
-    const result = await this.repository.findOneBy({ fullName });
+  async findOneByName(username: string, returnWithPassword?: boolean): Promise<UserEntity> {
+    const result = returnWithPassword
+      ? await this.repository.findOne({
+          where: {
+            username,
+          },
+          select: ['username', 'email', 'password', 'id'],
+        })
+      : await this.repository.findOneBy({ username })
 
-    if (!result) throw new NotFoundException('Пользователь не найден');
-
-    return result;
+    if (!result) throw new NotFoundException('Пользователь не найден')
+    console.log(result)
+    
+    return result
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<UpdateResult> {
-    const result = await this.repository.update(id, dto);
+  async update(id: number, dto: UpdateUserDto): Promise<UserEntity> {
+    const result = await this.repository.update(id, dto)
 
-    if (!result) throw new NotFoundException('Пользователь не найден');
+    if (!result) throw new NotFoundException('Пользователь не найден')
 
-    return result;
+    const user = await this.findOneById(id)
+
+    return user
   }
 
-  remove(id: string): Promise<DeleteResult> {
-    return this.repository.delete(id);
+  remove(id: number): Promise<DeleteResult> {
+    return this.repository.delete(id)
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

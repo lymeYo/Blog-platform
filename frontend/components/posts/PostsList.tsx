@@ -1,25 +1,17 @@
 import React from "react"
 import Router, { useRouter } from "next/router"
 import { useSelector } from "react-redux"
-import PostItem from "./PostItem"
+import PostItem from "./postItem"
+import {TpostResult} from "../../utils/api/types";
 
 function PostsList(props: any) {
-  const { postsList } = useSelector(({ posts }) => ({
-    postsList: posts.postsList 
-  }))
-
-  const list = postsList.map((postData) => {
-    return (
-      <PostItem postId={postData.postId} isFullPost={false} />
-    )
+  const list = props.posts.map((post: TpostResult) => {
+    return <PostItem comments={post.comments} post={post} isFullPost={false} />
   })
   
   return (
     <ul className="list">
       { list }
-      {/* <PostItem isFullPost={false} />
-      <PostItem isFullPost={false} />
-      <PostItem isFullPost={false} /> */}
     </ul>
   )
 }

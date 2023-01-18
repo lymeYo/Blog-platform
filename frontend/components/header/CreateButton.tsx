@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 function CreateButton(props: any) {
    let router = useRouter()
    
-   let renderCreatePost = () => {
-      router.push('/createPost')
+   let renderCreatePost = async () => {
+      await router.push('/write')
    }
 
    return (

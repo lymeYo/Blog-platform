@@ -1,6 +1,7 @@
 import { Visibility } from '@mui/icons-material'
 import SearchIcon from '@mui/icons-material/Search';
 import { Input, OutlinedInput, InputAdornment, TextField, IconButton } from '@mui/material'
+import React, { createRef, useEffect } from 'react';
 // import { makeStyles } from '@mui/styles';
 
 
@@ -17,25 +18,39 @@ import { Input, OutlinedInput, InputAdornment, TextField, IconButton } from '@mu
 // });
 
 function SearchArea(props: any) {
-   // const classes = useStyles();
-   
+  const inputRef = createRef()
+  useEffect(() => {
+    const inputFocusChecker = () => {
+      const isInputFocus = inputRef.current === document.activeElement 
+      if (isInputFocus == props.isInputFocus) return
+
+      props.setInputFocus(isInputFocus)
+    }
+    document.addEventListener('click', inputFocusChecker)
+
+    return () => {document.removeEventListener("click", inputFocusChecker)}
+  })
+  
   return (
-    <div className='search-area-wrapper'>
-        <div className='search-area'>
-           <OutlinedInput
-               // className={classes.darkColor}
-               required
-               fullWidth 
-               id="outlined"
-               placeholder="Поиск"
-               className="input"
-               endAdornment={
-                  <InputAdornment position="end">
-                     <IconButton sx={{ cursor: "pointer" }}><SearchIcon /></IconButton>
-                  </InputAdornment>
-               }
-            />
-         </div>
+    <div className="search-area-wrapper">
+      <div className="search-area">
+        <OutlinedInput
+          // className={classes.darkColor}
+          inputRef={inputRef}
+          required
+          fullWidth
+          id="outlined"
+          placeholder="Поиск"
+          className="input"
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton sx={{ cursor: "pointer" }}>
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </div>
     </div>
   )
 }

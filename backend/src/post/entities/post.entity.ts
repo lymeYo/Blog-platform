@@ -1,32 +1,51 @@
-import { UserEntity } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { UserEntity } from 'src/user/entities/user.entity'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne, OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
+import { CommentEntity } from "../../comment/entities/comment.entity";
 
 @Entity('posts')
 export class PostEntity {
-  @PrimaryColumn()
-  id: string;
-
-  @ManyToOne(() => UserEntity, { nullable: false })
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  @PrimaryGeneratedColumn()
+  id: number
 
   @Column()
-  title: string;
+  userId: number
+
+  @ManyToOne(() => UserEntity, {
+    nullable: false,
+    eager: true,
+  })
+  user: UserEntity
+
+  @OneToMany(() => CommentEntity, (comment) => comment.post, {
+    eager: true,
+  })
+  comments: CommentEntity[]
 
   @Column()
-  body: string;
+  title: string
 
   @Column()
-  rating: number;
+  body: string
+
+  @Column()
+  rating: number
 
   @Column({
     default: 0,
   })
-  views: number;
+  views: number
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  updatedAt: Date
 }

@@ -21,32 +21,40 @@ let CommentService = class CommentService {
     constructor(repository) {
         this.repository = repository;
     }
-    create(dto) {
-        return this.repository.save({
-            id: dto.id,
+    async create(dto, userId) {
+        const safetyDto = {
             text: dto.text,
             rating: dto.rating,
             post: { id: dto.postId },
-            user: { id: dto.userId }
-        });
+            user: { id: userId },
+        };
+        console.log(safetyDto, 'safetyDto');
+        return this.repository.save(safetyDto);
+    }
+    async update(id, dto, userId, withoutUserAccess) {
+        const comment = await this.repository.findOneBy({ id });
+        if (!comment)
+            throw new common_1.NotFoundException('Комментарий не найден');
+        if (!withoutUserAccess && comment.user.id != userId)
+            throw new common_1.NotFoundException("У вас нет доступа к этому комментарию");
+        return this.repository.update(id, dto);
+    }
+    async remove(id, userId) {
+        const comment = await this.repository.findOneBy({ id });
+        if (!comment)
+            throw new common_1.NotFoundException('Комментарий не найден');
+        if (comment.user.id != userId)
+            throw new common_1.NotFoundException("У вас нет доступа к этому комментарию");
+        return this.repository.delete(id);
     }
     findAll() {
-        return this.repository.find({ relations: ['user', 'post'] });
+        return this.repository.find();
     }
     async findOne(id) {
         const result = await this.repository.findOneBy({ id });
         if (!result)
             throw new common_1.NotFoundException('Комментарий не найден');
         return result;
-    }
-    async update(id, dto) {
-        const result = await this.repository.update(id, dto);
-        if (!result)
-            throw new common_1.NotFoundException('Комментарий не найден');
-        return result;
-    }
-    remove(id) {
-        return this.repository.delete(id);
     }
 };
 CommentService = __decorate([

@@ -6,7 +6,13 @@ $bgClr: rgb(242, 242, 242);
 $greenValid: rgb(63, 150, 102);
 $redInvalid: rgb(245, 40, 40);
 $redDanger:rgb(248, 167, 167);
-
+$sizes: (
+  "xs":320px,
+  "sm":576px,
+  "md":768px,
+  "lg":992px,
+  "xl":1200px
+);
 
 $headerHeight: 40px;
 
@@ -27,8 +33,13 @@ a {
 }
 
 * {
-  
   box-sizing: border-box;
+}
+
+@mixin screen-size($fsz) {
+  @media screen and (max-width: 800px) {
+    font-size: $fsz;
+  }
 }
 
 ul {

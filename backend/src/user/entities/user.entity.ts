@@ -1,17 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm"
-import { IsEmail } from 'class-validator';
+import { PostEntity } from "src/post/entities/post.entity"
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, OneToMany } from "typeorm"
 
 @Entity('users')
 export class UserEntity {
-  @PrimaryColumn()
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number
 
-  @Column()
-  fullName: string;
+  @Column({
+    unique: true,
+  })
+  username: string
 
-  @Column()
-  email: string;
+  @Column({
+    nullable: true,
+    unique: true,
+  })
+  email: string
 
-  @Column()
-  password: string;
+  @Column({ select: false })
+  password: string
 }

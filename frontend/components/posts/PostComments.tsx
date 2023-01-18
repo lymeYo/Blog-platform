@@ -4,29 +4,22 @@ import { useSelector } from "react-redux"
 
 import AddCommentArea from "../universal/AddCommentArea"
 import Comment from "./Comment"
-import { PostIdContext } from "./PostItem"
+import { PostIdContext } from "./postItem"
+import {GetServerSideProps} from "next";
 
 function CommentsList(props: any) {
-  // const text =
-  //   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, placeat? Blanditiis modi fuga fugiat atque esse unde cupiditate nobis omnis."
   const postId = React.useContext(PostIdContext)
-  
-  
-  const { commentsDataList } = useSelector(({ posts }) => ({
-    commentsDataList: posts.getPostById(postId).comments,
-  }))
-  const commentsList = commentsDataList.map((comment) => {
-    
+  const commentsList = props.comments.map((comment) => {
+
     return (
       <li>
         <Comment
-          time={comment.publishTime}
-          name={"#NAME"}
+          time={comment.createdAt}
+          name={comment.user.username}
           text={comment.text}
           rating={comment.rating}
-          commentId={comment.id}
-          postId={postId}
-          key={postId}
+          id={comment.id}
+          key={comment.id}
         />
       </li>
     )
@@ -34,48 +27,17 @@ function CommentsList(props: any) {
   return (
     <ul className="comments-list">
       { commentsList }
-      {/* <li>
-        <Comment
-          time={"2 часа"}
-          name={"Ramil Javadi"}
-          text={text}
-          rate={12345}
-        />
-      </li>
-      <li>
-        <Comment
-          time={"2 часа"}
-          name={"Ramil Javadi"}
-          text={text}
-          rate={12345}
-        />
-      </li>
-      <li>
-        <Comment
-          time={"2 часа"}
-          name={"Ramil Javadi"}
-          text={text}
-          rate={12345}
-        />
-      </li>
-      <li>
-        <Comment
-          time={"2 часа"}
-          name={"Ramil Javadi"}
-          text={text}
-          rate={12345}
-        />
-      </li> */}
     </ul>
   )
 }
 
 function PostComments(props: any) {
+  console.log(props)
   return (
     <div className="comments">
       <Paper variant="elevation" square>
-        <AddCommentArea />
-        <CommentsList />
+        <AddCommentArea postId={props.postId} />
+        <CommentsList comments={props.comments} />
       </Paper>
     </div>
   )

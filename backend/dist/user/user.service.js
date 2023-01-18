@@ -22,7 +22,12 @@ let UserService = class UserService {
         this.repository = repository;
     }
     create(dto) {
-        return this.repository.save(dto);
+        const safetyDto = {
+            username: dto.username,
+            password: dto.password,
+            email: dto.email || null,
+        };
+        return this.repository.save(safetyDto);
     }
     findAll() {
         return this.repository.find();
@@ -33,17 +38,26 @@ let UserService = class UserService {
             throw new common_1.NotFoundException('Пользователь не найден');
         return result;
     }
-    async findOneByName(fullName) {
-        const result = await this.repository.findOneBy({ fullName });
+    async findOneByName(username, returnWithPassword) {
+        const result = returnWithPassword
+            ? await this.repository.findOne({
+                where: {
+                    username,
+                },
+                select: ['username', 'email', 'password', 'id'],
+            })
+            : await this.repository.findOneBy({ username });
         if (!result)
             throw new common_1.NotFoundException('Пользователь не найден');
+        console.log(result);
         return result;
     }
     async update(id, dto) {
         const result = await this.repository.update(id, dto);
         if (!result)
             throw new common_1.NotFoundException('Пользователь не найден');
-        return result;
+        const user = await this.findOneById(id);
+        return user;
     }
     remove(id) {
         return this.repository.delete(id);

@@ -1,13 +1,39 @@
-import Router, { useRouter } from 'next/router'
-import PostItem from '../../components/posts/PostItem'
+import React from 'react'
+
+import {GetServerSideProps} from "next";
+import {MyApi} from "../../utils/api";
+import {TcommentResult, TpostResult} from "../../utils/api/types";
+import PostItem from "../../components/posts/postItem";
 
 
-function FullPost (props: any) {
-  const router = useRouter()
-  const postId = router.query.id  
-  console.log(router)
-  
-  return <PostItem postId={postId} isFullPost={true} />
+interface FullPostProps {
+  post: TpostResult,
+  comments: TcommentResult
+}
+function FullPost (props: FullPostProps) {
+
+  return (
+    <PostItem comments={props.comments} post={props.post} isFullPost={true} />
+  )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const post = await MyApi(ctx).post.getPostById(ctx.query.id as string)
+  const comments = post.comments
+  if (!post) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: {
+      post,
+      comments,
+    }
+  }
 }
 
 export default FullPost

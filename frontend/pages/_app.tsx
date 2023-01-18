@@ -1,8 +1,15 @@
-import '../styles/globals.scss'
-import Header from '../components/header/Header'
+import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Provider } from "react-redux" 
-import store from "../redux/store"
+import { Provider } from 'react-redux'
+import { wrapper } from '../redux/store'
+import App, { AppProps } from 'next/app'
+import { MyApi } from '../utils/api'
+import { parseCookies } from 'nookies'
+import { setLoginData } from '../redux/slices/login'
+
+import Header from '../components/header/Header'
+import { TauthResData } from '../utils/api/types'
+import '../styles/globals.scss'
 
 const theme = createTheme({
   palette: {
@@ -21,20 +28,43 @@ const theme = createTheme({
     header: {
       main: '#f9a825',
       contrastText: '#fff',
-    },
+    }, //  добавил палитру header в типы ThemeOptions.palette чтобы не ругался ts
   },
-});
+})
 
-function MyApp({ Component, pageProps }) {
-  
+function MyApp({ Component, ...rest }: AppProps) {
+  const { store, props } = wrapper.useWrappedStore(rest)
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-          <Header />
-          <Component {...pageProps} />
+        <Header />
+        <Component {...props.pageProps} />
       </ThemeProvider>
     </Provider>
   )
 }
 
+MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (appContext) => {
+  const { Component, ctx } = appContext
+  try {
+    const userData: TauthResData = await MyApi(appContext.ctx).user.getProfile()
+    store.dispatch(setLoginData(userData))
+  } catch (err) {
+    if (ctx.asPath == '/writePost') {
+      ctx.res?.writeHead(301, {
+        Location: '/404',
+      })
+      ctx.res?.end()
+    } //перенаправляю на 404, если неавторизованный пользователь находится на странице для авторизованных
+
+    // console.log(err, ' error')
+  } finally {
+    return {
+      pageProps: { ...(await App.getInitialProps(appContext)).pageProps },
+    }
+  }
+})
+
 export default MyApp
+//The object notation for `createSlice.extraReducers` is deprecated, and will be removed in RTK 2.0. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createSlice
