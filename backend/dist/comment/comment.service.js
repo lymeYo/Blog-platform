@@ -28,8 +28,8 @@ let CommentService = class CommentService {
             post: { id: dto.postId },
             user: { id: userId },
         };
-        console.log(safetyDto, 'safetyDto');
-        return this.repository.save(safetyDto);
+        const res = await this.repository.save(safetyDto);
+        return this.repository.findOneBy({ id: res.id });
     }
     async update(id, dto, userId, withoutUserAccess) {
         const comment = await this.repository.findOneBy({ id });

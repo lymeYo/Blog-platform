@@ -1,25 +1,25 @@
-import React from "react"
-import { Avatar, ClickAwayListener, Grow, IconButton, MenuItem, MenuList, Paper, Popper } from "@mui/material"
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz"
-import { useDispatch } from "react-redux"
+import React, { useState } from 'react'
+import {
+  Avatar,
+  ClickAwayListener,
+  Grow,
+  IconButton,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+} from '@mui/material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 
-import StatisticsButtons from "../universal/StatisticsButtons"
-import { commentRatingRender, deleteComment } from "../../redux/reducers/posts/postsCreators"
-import { PostIdContext } from "./postItem"
-import {TcommentRequest} from "../../utils/api/types";
-import {MyApi} from "../../utils/api";
+import StatisticsButtons from '../universal/StatisticsButtons'
+import { TcommentRequest } from '../../utils/api/types'
+import { MyApi } from '../../utils/api'
 
 function OptionList(props: any) {
-  const dispatch = useDispatch()
-  const postId = React.useContext(PostIdContext)
-  
-
   const deleteCommentRender = (event) => {
     props.handleClick(event)
-    
-    dispatch(deleteComment(postId, props.commentId))
   }
-  
+
   return (
     <>
       <MenuItem onClick={deleteCommentRender}>Delete comment</MenuItem>
@@ -44,51 +44,36 @@ function CommentButtons(props: any) {
   }
 
   function handleListKeyDown(event) {
-    if (event.key === "Tab") {
+    if (event.key === 'Tab') {
       event.preventDefault()
       setOpen(false)
     }
   }
-  
-  
+
   return (
     <div className="comment-buttons">
       <div>Ответить</div>
       <div>
         <IconButton
           ref={anchorRef}
-          aria-controls={open ? "menu-list-grow" : undefined}
+          aria-controls={open ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         >
           <MoreHorizIcon />
         </IconButton>
-        <Popper
-          open={open}
-          anchorEl={anchorRef.current}
-          role={undefined}
-          transition
-          disablePortal
-        >
+        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin:
-                  placement === "bottom" ? "center top" : "center bottom",
+                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
               }}
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList
-                    autoFocusItem={open}
-                    id="menu-list-grow"
-                    onKeyDown={handleListKeyDown}
-                  >
-                    <OptionList
-                      commentId={props.commentId}
-                      handleClick={handleClose}
-                    />
+                  <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                    <OptionList commentId={props.commentId} handleClick={handleClose} />
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -101,18 +86,20 @@ function CommentButtons(props: any) {
 }
 
 function Comment(props: any) {
-  const dispatch = useDispatch()
   const { name, time, rating, text, id } = props
+  const [curRating, setCurRating] = useState(rating)
   const ratingRender = async (isRatingUp: boolean) => {
+    const newRating = isRatingUp ? rating + 1 : rating - 1
     const commentData: Partial<TcommentRequest> = {
       text,
-      rating: isRatingUp ? rating + 1 : rating - 1
+      rating: newRating,
     }
+    setCurRating(newRating)
     await MyApi().comment.updateStatistics(commentData, id)
   }
   const downClick = () => ratingRender(false)
   const upClick = () => ratingRender(true)
-  
+
   return (
     <div className="comment">
       <div className="comment-info">
@@ -126,11 +113,7 @@ function Comment(props: any) {
           <div className="comment-name">{name}</div>
           <div className="comment-time">{time}</div>
         </div>
-        <StatisticsButtons
-          rating={rating}
-          downClick={downClick}
-          upClick={upClick}
-        />
+        <StatisticsButtons rating={curRating} downClick={downClick} upClick={upClick} />
       </div>
       <div className="comment-text">{text}</div>
       <CommentButtons commentId={id} />

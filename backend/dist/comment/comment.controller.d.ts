@@ -4,16 +4,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 export declare class CommentController {
     private readonly commentService;
     constructor(commentService: CommentService);
-    create(userId: number, createCommentDto: CreateCommentDto): Promise<{
-        text: string;
-        rating: number;
-        post: {
-            id: number;
-        };
-        user: {
-            id: number;
-        };
-    } & import("./entities/comment.entity").CommentEntity>;
+    create(userId: number, createCommentDto: CreateCommentDto): Promise<import("./entities/comment.entity").CommentEntity>;
     findAll(): Promise<import("./entities/comment.entity").CommentEntity[]>;
     findOne(id: number): Promise<import("./entities/comment.entity").CommentEntity>;
     updateStatistics(id: number, updateCommentDto: UpdateCommentDto, userId: number): Promise<import("typeorm").UpdateResult>;

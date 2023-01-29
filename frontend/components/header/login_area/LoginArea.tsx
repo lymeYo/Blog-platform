@@ -1,9 +1,10 @@
-import { Button, ClickAwayListener } from "@mui/material"
-import IconButton from "@mui/material/IconButton"
-import DeleteIcon from "@mui/icons-material/Delete"
-import { useDispatch, useSelector } from "react-redux"
-import LoginModal from "./LoginModal"
-import React from "react"
+import { Button, ClickAwayListener } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+
+import LoginModal from './LoginModal'
 
 function SignedUser(props: any) {
   const { avatarSrc, username } = useSelector(({ login }: any) => ({

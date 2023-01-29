@@ -1,10 +1,12 @@
-import React from 'react';
+import React from 'react'
+// import { useRouter } from 'next/router'
+
+import { GetServerSideProps } from 'next'
+
 import { useRouter } from 'next/router'
 
-import Posts from '../components/posts/Posts';
-import { MyApi } from '../utils/api';
-
-
+import Posts from '../components/posts/Posts'
+import { MyApi } from '../utils/api'
 
 function HomePage(props) {
   const router = useRouter()
@@ -16,9 +18,9 @@ function HomePage(props) {
   )
 }
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const postsData = await MyApi().post.getAll()
-  
+
   return {
     props: {
       postsData,

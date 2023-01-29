@@ -5,16 +5,7 @@ import { CommentEntity } from './entities/comment.entity';
 export declare class CommentService {
     private repository;
     constructor(repository: Repository<CommentEntity>);
-    create(dto: CreateCommentDto, userId: number): Promise<{
-        text: string;
-        rating: number;
-        post: {
-            id: number;
-        };
-        user: {
-            id: number;
-        };
-    } & CommentEntity>;
+    create(dto: CreateCommentDto, userId: number): Promise<CommentEntity>;
     update(id: number, dto: UpdateCommentDto, userId: number, withoutUserAccess?: boolean): Promise<UpdateResult>;
     remove(id: number, userId: number): Promise<DeleteResult>;
     findAll(): Promise<CommentEntity[]>;

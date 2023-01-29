@@ -1,8 +1,8 @@
-import { Button } from "@mui/material"
-import React from "react"
+import { Button } from '@mui/material'
+import React from 'react'
 
 function PostButtons(props: any) {
-  let publishingPost = () => {
+  const publishingPost = () => {
     props.setEditorSaving(true)
   }
 
@@ -14,6 +14,5 @@ function PostButtons(props: any) {
     </div>
   )
 }
-
 
 export default PostButtons

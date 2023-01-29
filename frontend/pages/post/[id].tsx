@@ -1,20 +1,17 @@
 import React from 'react'
 
-import {GetServerSideProps} from "next";
-import {MyApi} from "../../utils/api";
-import {TcommentResult, TpostResult} from "../../utils/api/types";
-import PostItem from "../../components/posts/postItem";
+import { GetServerSideProps } from 'next'
 
+import { MyApi } from '../../utils/api'
+import { TcommentResult, TpostResult } from '../../utils/api/types'
+import PostItem from '../../components/posts/postItem'
 
 interface FullPostProps {
-  post: TpostResult,
-  comments: TcommentResult
+  post: TpostResult
+  comments: TcommentResult[]
 }
-function FullPost (props: FullPostProps) {
-
-  return (
-    <PostItem comments={props.comments} post={props.post} isFullPost={true} />
-  )
+function FullPost(props: FullPostProps) {
+  return <PostItem comments={props.comments} post={props.post} isFullPost={true} />
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -32,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       post,
       comments,
-    }
+    },
   }
 }
 

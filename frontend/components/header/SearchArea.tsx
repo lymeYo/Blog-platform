@@ -1,9 +1,14 @@
 import { Visibility } from '@mui/icons-material'
-import SearchIcon from '@mui/icons-material/Search';
-import { Input, OutlinedInput, InputAdornment, TextField, IconButton } from '@mui/material'
-import React, { createRef, useEffect } from 'react';
+import SearchIcon from '@mui/icons-material/Search'
+import {
+  Input,
+  OutlinedInput,
+  InputAdornment,
+  TextField,
+  IconButton,
+} from '@mui/material'
+import React, { createRef, useEffect } from 'react'
 // import { makeStyles } from '@mui/styles';
-
 
 // const useStyles = makeStyles({
 //    root: {
@@ -21,16 +26,18 @@ function SearchArea(props: any) {
   const inputRef = createRef()
   useEffect(() => {
     const inputFocusChecker = () => {
-      const isInputFocus = inputRef.current === document.activeElement 
+      const isInputFocus = inputRef.current === document.activeElement
       if (isInputFocus == props.isInputFocus) return
 
       props.setInputFocus(isInputFocus)
     }
     document.addEventListener('click', inputFocusChecker)
 
-    return () => {document.removeEventListener("click", inputFocusChecker)}
+    return () => {
+      document.removeEventListener('click', inputFocusChecker)
+    }
   })
-  
+
   return (
     <div className="search-area-wrapper">
       <div className="search-area">
@@ -44,7 +51,7 @@ function SearchArea(props: any) {
           className="input"
           endAdornment={
             <InputAdornment position="end">
-              <IconButton sx={{ cursor: "pointer" }}>
+              <IconButton sx={{ cursor: 'pointer' }}>
                 <SearchIcon />
               </IconButton>
             </InputAdornment>

@@ -1,4 +1,4 @@
 export interface actionInterface {
-   type: string
-   [key: string]: any
+  type: string
+  [key: string]: any
 }

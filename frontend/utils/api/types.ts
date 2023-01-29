@@ -36,22 +36,22 @@ export type TpostResult = {
 }
 
 export type TpostRequest = {
-  title: string,
-  body: string,
-  rating: number,
+  title: string
+  body: string
+  rating: number
 }
 
 export type TcommentResult = {
-  "id": number,
-  "text": string,
-  "rating": number,
-  "createdAt": string,
-  "updatedAt": string,
-  "user"?: TuserRelation
+  id: number
+  text: string
+  rating: number
+  createdAt: string
+  updatedAt: string
+  user?: TuserRelation
 }
 
 export type TcommentRequest = {
-  text: string,
-  rating: number,
-  postId: number,
+  text: string
+  rating: number
+  postId: number
 }
