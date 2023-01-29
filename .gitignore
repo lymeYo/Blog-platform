@@ -33,3 +33,4 @@ yarn-error.log*
 
 /tsconfig.json
 .idea/
+node_modules/
